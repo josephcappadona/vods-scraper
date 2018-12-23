@@ -32,6 +32,7 @@ def get_page_matches(player_page_html):
             
             event = match_row.find('td', {'class': 'views-field-field-event-instance'}).text.strip()
             players = [player.text for player in match_row.find('a').find_all('b')]
+            characters = extract_characters(match_row)
             match_format = match_row.find('td', {'class': 'views-field-field-match-format'}).text.strip()
             event_round = match_row.find('td', {'class': 'views-field-field-event-round'}).text.strip()
             
@@ -43,12 +44,31 @@ def get_page_matches(player_page_html):
                       'vod_url': vod_url,
                       'youtube_url': youtube_url,
                       'players': players,
+                      'characters': characters,
                       'match_format': match_format,
                       'event_round': event_round }
             matches.append(match)
             pprint(match); print('')
             
     return matches
+
+def extract_characters(match_row):
+    chars = {}
+    versus_tags = match_row.find('a').find_all()[1:]
+    for tag in versus_tags:
+        if tag.name == 'b':
+            player = None
+            player = tag.text.strip()
+            print('player: %s' % player)
+            chars[player] = []
+        elif tag.name == 'img':
+            char = parse_character(tag['src'])
+            print('char: %s' % char)
+            chars[player].append(char)
+    return chars
+
+def parse_character(filename):
+    return filename.split('/')[-1].split('-')[-1].split('.')[0]
 
 def extract_youtube_url(vods_match_url):
     
@@ -87,16 +107,29 @@ def get_player_matches(player):
 
 
 if __name__ == '__main__':
-    if len(argv) != 2:
-        print('Usage:  python get_vods_url.py PLAYER')
+    if len(argv) != 3:
+        print('Usage:  python get_vods_url.py [-p PLAYER | -f players.txt]')
         quit()
     else:
-        player = argv[1]
-        print('\n\nGetting VODs for %s\n\n' % player)
-        matches = get_player_matches(player)
-        print('\n\nFinished\n\n')
-        
+        players = []
+        if argv[1] == '-p':
+            players.append(argv[2])
+            
+        elif argv[1] == '-f':
+            with open(argv[2], 'rt') as player_file:
+                for player in player_file.read().split('\n'):
+                    if player:
+                        players.append(player)
+                        
         os.makedirs('output', exist_ok=True)
-        pickle.dump(matches, open('output/%s.pkl' % player, 'wb+'))
+        for player in players:
+            print('\n\nGetting VODs for %s\n' % player)
 
+            matches = get_player_matches(player)
+            print('\nFinished')
 
+            outfile_path = 'output/%s.pkl' % player
+            pickle.dump(matches, open(outfile_path, 'wb+'))
+            print('Match info written to %s\n\n' % outfile_path)
+            
+            
