@@ -59,11 +59,9 @@ def extract_characters(match_row):
         if tag.name == 'b':
             player = None
             player = tag.text.strip()
-            print('player: %s' % player)
             chars[player] = []
         elif tag.name == 'img':
             char = parse_character(tag['src'])
-            print('char: %s' % char)
             chars[player].append(char)
     return chars
 
