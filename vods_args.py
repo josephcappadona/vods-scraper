@@ -20,7 +20,7 @@ def parse_args(args):
             characters.extend(suffix.split(','))
         
         elif prefix == '-t':
-            tournaments = suffix
+            tournament = suffix
 
     return players, characters, tournament
 
