@@ -1,9 +1,9 @@
 
-valid_prefixes = set(['-p', '-c', '-t'])
 
 def parse_args(args):
     
     arg_tuples = list(zip(args[1:-1:2], args[2::2]))
+    valid_prefixes = set(['-p', '-c', '-t'])
     if any(prefix not in valid_prefixes for prefix, _ in arg_tuples):
         raise ValueError # illegal argument format
 
