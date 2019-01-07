@@ -76,7 +76,7 @@ if __name__ == '__main__':
     makedirs(video_dir, exist_ok=True)
 
     matches = load_matches(file_handle, data_dir=data_dir)
-    print('\nDownloading VODs for %s\n' % file_handle)
+    print('\nDownloading VODs for \'%s\'\n' % file_handle)
     try:
         for match in matches:
             download_match(match, video_dir)

@@ -39,11 +39,11 @@ if __name__ == '__main__':
     file_handle = create_handle(players, characters, tournament)
     outfile_path = 'output/%s.pkl' % file_handle
 
-    print('\n\nGetting VODs for %s\n' % file_handle)
+    print('\n\nGetting VODs for \'%s\'\n\n' % file_handle)
     matches = get_matches(players, characters, tournament)
     print('\nFinished')
 
     dump(matches, open(outfile_path, 'wb+'))
-    print('Match info written to %s\n\n' % outfile_path)
+    print('Match info written to \'%s\'\n\n' % outfile_path)
         
         
