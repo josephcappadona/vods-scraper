@@ -1,6 +1,6 @@
 
 def get_page_url(players, characters, tournament, page):
-    url = "htt[s://vods.co/melee/"
+    url = "https://vods.co/melee/"
     
     # append player arg(s)
     if len(players) > 0:

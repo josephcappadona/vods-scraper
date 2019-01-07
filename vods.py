@@ -34,7 +34,7 @@ if __name__ == '__main__':
         print('Arguments not formatted correctly.\n')
         print(usage)
         exit()
-                    
+
     makedirs('output', exist_ok=True)
     file_handle = create_handle(players, characters, tournament)
     outfile_path = 'output/%s.pkl' % file_handle
