@@ -1,12 +1,12 @@
-import pytube
-from pytube.helpers import safe_filename
-from pathlib import Path
-from os import makedirs, remove
-import pickle
 from sys import argv
+from os import makedirs, remove
+from pickle import load
 from pprint import pprint
+from pathlib import Path
 from vods_args import parse_args, create_handle
-
+from pytube import YouTube
+from pytube.helpers import safe_filename
+from pytube.exceptions import VideoUnavailable
 
 def download_match(match, video_dir):
     
@@ -22,7 +22,7 @@ def download_match(match, video_dir):
     new_title = '%s (%s) vs %s (%s) - %s %s (%s) - %s' % (p1, c1, p2, c2, event, event_round, match_format, date)
     
     try:
-        yt = pytube.YouTube(youtube_url).streams.first()
+        yt = YouTube(youtube_url).streams.first()
         new_filename = safe_filename(new_title) + '.' + yt.mime_type.split('/')[-1]
         video_fp = Path(video_dir + '/' + new_filename)
         
@@ -39,7 +39,7 @@ def download_match(match, video_dir):
         else:
             print('\tVideo already downloaded. Skipping...')
             
-    except (pytube.exceptions.VideoUnavailable, OSError) as e:
+    except (VideoUnavailable, OSError) as e:
         print('\nCould not download video (%s):' % str(type(e)).split("'")[1])
         pprint(match)
         print('')
@@ -49,7 +49,7 @@ def download_match(match, video_dir):
 def load_matches(handle, data_dir='output'):
     try:
         filename = '%s.pkl' % handle
-        matches = pickle.load(open(data_dir + '/' + filename, 'rb'))
+        matches = load(open(data_dir + '/' + filename, 'rb'))
         return matches
         
     except:
