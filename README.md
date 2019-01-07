@@ -3,7 +3,7 @@
 ## Setup
 
 ```
-sudo pip install pytube, BeautifulSoup4
+sudo pip install pytube BeautifulSoup4 pprint
 sudo apt-get install ffmpeg
 ```
 
