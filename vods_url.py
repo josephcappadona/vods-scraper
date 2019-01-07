@@ -16,10 +16,18 @@ def get_page_url(players, characters, tournament, page):
 
     # append tournament arg
     if tournament:
+        tournament = clean_tournament_name(tournament)       
         url += '/event/' + tournament
 
     # append page number
     url += '?page=' + str(page)
 
     return url       
-        
+
+def clean_tournament_name(tournament):
+    tournament = tournament.lower()
+    remove = [':', '\'', '"', '.', '&', 'for ', 'on the ']
+    for s in remove:
+        tournament = tournament.replace(s, '')
+    tournament = tournament.replace(' ', '-')
+    return tournament
