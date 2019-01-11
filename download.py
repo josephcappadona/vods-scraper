@@ -74,7 +74,7 @@ if __name__ == '__main__':
     
     data_dir = 'output'
     file_handle = create_handle(players, characters, tournament, limit)
-    video_dir = '%s/%s' % (data_dir, file_handle)
+    video_dir = '%s/%s/' % (data_dir, file_handle)
     makedirs(video_dir, exist_ok=True)
 
     matches = load_matches(file_handle, data_dir=data_dir)
