@@ -9,7 +9,7 @@ def get_page_html(url):
         raise ValueError('Could not retrieve page: {}'.format(url))
     return req.text
 
-def get_page_matches(page_url):
+def get_page_matches(page_url, limit=None):
     matches = []
     page_html = get_page_html(page_url)
     soup = BeautifulSoup(page_html, 'html5lib')
@@ -40,6 +40,9 @@ def get_page_matches(page_url):
                       'event_round': event_round }
             matches.append(match)
             pprint(match); print('')
+
+            if limit and len(matches) >= limit:
+                return matches
             
     return matches
 

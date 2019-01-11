@@ -3,13 +3,14 @@
 def parse_args(args):
     
     arg_tuples = list(zip(args[1:-1:2], args[2::2]))
-    valid_prefixes = set(['-p', '-c', '-t'])
+    valid_prefixes = set(['-p', '-c', '-t', '-l'])
     if any(prefix not in valid_prefixes for prefix, _ in arg_tuples):
         raise ValueError # illegal argument format
 
     players = []
     characters = []
     tournament = ''
+    limit = None
     for i, (prefix, suffix) in enumerate(arg_tuples):
         ind = 2 + i*2
         
@@ -22,10 +23,20 @@ def parse_args(args):
         elif prefix == '-t':
             tournament = suffix
 
-    return players, characters, tournament
+        elif prefix == '-l':
+            try:
+                limit = int(suffix)
+
+                if limit == 0:
+                    raise ValueError
+
+            except ValueError as e:
+                raise ValueError('Illegal argument \'%s\', limit must be positive integer' % suffix) from e
+
+    return players, characters, tournament, limit
 
 
-def create_handle(players, characters, tournament):
+def create_handle(players, characters, tournament, limit):
     strs = []
     if players:
         players_str = '_'.join(players)
@@ -39,6 +50,9 @@ def create_handle(players, characters, tournament):
     # if no args specified, we are pulling all Melee matches
     if not strs:
         strs.append('Melee')
+
+    if limit:
+        strs.append(str(limit))
 
     return '-'.join(strs)
 
