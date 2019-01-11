@@ -22,11 +22,11 @@ def download_match(match, video_dir):
     new_title = '%s (%s) vs %s (%s) - %s %s (%s) - %s' % (p1, c1, p2, c2, event, event_round, match_format, date)
     
     try:
+        print('\n\t\tDownloading %s' % new_title)
         yt = YouTube(youtube_url).streams.first()
         new_filename = safe_filename(new_title) + '.' + yt.mime_type.split('/')[-1]
         video_fp = Path(video_dir + '/' + new_filename)
         
-        print('Downloading %s' % new_title)
         if not video_fp.is_file():
             try:
                 yt.download(video_dir, filename=new_title)
@@ -37,10 +37,10 @@ def download_match(match, video_dir):
                     remove(str(filepath))
                 raise e
         else:
-            print('\tVideo already downloaded. Skipping...')
+            print('\t\t\tVideo already downloaded. Skipping...')
             
     except (VideoUnavailable, OSError) as e:
-        print('\nCould not download video (%s):' % str(type(e)).split("'")[1])
+        print('\t\t\tCould not download video (%s):' % str(type(e)).split("'")[1])
         pprint(match)
         print('')
     
@@ -49,7 +49,9 @@ def download_match(match, video_dir):
 def load_matches(handle, data_dir='output'):
     try:
         filename = '%s.pkl' % handle
-        matches = load(open(data_dir + '/' + filename, 'rb'))
+        filepath = data_dir + '/' + filename
+        print('\nLoading matches from \'%s\'' % filepath)
+        matches = load(open(filepath, 'rb'))
         return matches
         
     except:
@@ -58,25 +60,25 @@ def load_matches(handle, data_dir='output'):
     
 if __name__ == '__main__':
 
-    usage = 'Usage:  python download.py [-p PLAYER] [-c CHARACTER] [-t tournament]'
+    usage = 'Usage:  python download.py [-p PLAYER] [-c CHARACTER] [-t tournament] [-l LIMIT]'
     if len(argv) < 2:
         print(usage)
         quit()
 
     try:
-        players, characters, tournament = parse_args(argv)
+        players, characters, tournament, limit = parse_args(argv)
     except ValueError:
         print('Arguments not formatted correctly.\n')
         print(usage)
         exit()
     
     data_dir = 'output'
-    file_handle = create_handle(players, characters, tournament)
+    file_handle = create_handle(players, characters, tournament, limit)
     video_dir = '%s/%s' % (data_dir, file_handle)
     makedirs(video_dir, exist_ok=True)
 
     matches = load_matches(file_handle, data_dir=data_dir)
-    print('\nDownloading VODs for \'%s\'\n' % file_handle)
+    print('\n\tDownloading VODs for \'%s\'' % file_handle)
     try:
         for match in matches:
             download_match(match, video_dir)
