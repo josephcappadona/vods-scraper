@@ -41,9 +41,10 @@ if __name__ == '__main__':
         print(usage)
         exit()
     
-    makedirs('output', exist_ok=True)
+    output_dir = 'output/vods'
+    makedirs(output_dir, exist_ok=True)
     file_handle = create_handle(players, characters, tournament, limit)
-    outfile_path = 'output/%s.pkl' % file_handle
+    outfile_path = '%s/%s.pkl' % (output_dir, file_handle)
 
     print('\n\nGetting VODs for \'%s\'\n\n' % file_handle)
     matches = get_matches(players, characters, tournament, limit)
