@@ -41,7 +41,7 @@ if __name__ == '__main__':
         print(usage)
         exit()
     
-    output_dir = 'output/vods'
+    output_dir = 'output'
     makedirs(output_dir, exist_ok=True)
     file_handle = create_handle(players, characters, tournament, limit)
     outfile_path = '%s/%s.pkl' % (output_dir, file_handle)

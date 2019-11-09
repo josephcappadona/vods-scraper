@@ -12,7 +12,7 @@ def get_page_html(url):
 def get_page_matches(page_url, limit=None):
     matches = []
     page_html = get_page_html(page_url)
-    soup = BeautifulSoup(page_html, 'html5lib')
+    soup = BeautifulSoup(page_html, 'html.parser')
     
     match_tables = soup.find_all('table', {'class': 'views-table'})
     for match_table in match_tables:
@@ -65,7 +65,7 @@ def parse_character(filename):
 def extract_youtube_url(vods_match_url):
     
     vods_match_html = get_page_html(vods_match_url)
-    vods_match_soup = BeautifulSoup(vods_match_html, 'html5lib')
+    vods_match_soup = BeautifulSoup(vods_match_html, 'html.parser')
     
     video_div = vods_match_soup.find('iframe', {'id': 'g1-video'})
     if video_div and video_div.has_attr('src'):
