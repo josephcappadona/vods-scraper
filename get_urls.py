@@ -29,7 +29,7 @@ def get_matches(players, characters, tournament, limit):
 
 if __name__ == '__main__':
 
-    usage = 'Usage:  python get_vods.py [-p PLAYERS] [-c CHARACTERS] [-t TOURNAMENT] [-l LIMIT]'
+    usage = 'Usage:  python get_urls.py [-p PLAYERS] [-c CHARACTERS] [-t TOURNAMENT] [-l LIMIT]'
     if len(argv) < 2:
         print(usage)
         quit()
