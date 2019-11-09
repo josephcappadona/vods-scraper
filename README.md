@@ -3,8 +3,12 @@
 ## Setup
 
 ```
-sudo pip install pytube BeautifulSoup4 pprint
+python -m pip install pytube BeautifulSoup4 pprint
+
+# on Debian
 sudo apt-get install ffmpeg
+# or on Mac OS
+brew install ffmpeg
 ```
 
 ## Examples
